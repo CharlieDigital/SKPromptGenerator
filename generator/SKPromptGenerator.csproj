@@ -24,9 +24,9 @@
     <PackageReleaseNotes>https://github.com/CharlieDigital/SKPromptGenerator/releases</PackageReleaseNotes>
     <RepositoryType>git</RepositoryType>
     <SignAssembly>False</SignAssembly>
-    <AssemblyVersion>0.2.0</AssemblyVersion>
-    <FileVersion>0.2.0</FileVersion>
-    <Version>0.2.0</Version>
+    <AssemblyVersion>0.2.1</AssemblyVersion>
+    <FileVersion>0.2.1</FileVersion>
+    <Version>0.2.1</Version>
     <NeutralLanguage>en</NeutralLanguage>
     <DevelopmentDependency>true</DevelopmentDependency>
     <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
@@ -34,6 +34,10 @@
 
   <ItemGroup>
     <None Include="../README.md" Pack="true" PackagePath="" Visible="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
   </ItemGroup>
 
   <ItemGroup>
