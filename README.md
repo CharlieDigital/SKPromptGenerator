@@ -143,3 +143,15 @@ public static class Prompts
 ```
 
 (See the `PromptTmpl` class for details)
+
+## Using the Sample App
+
+To use the sample app, you'll need to set up user secrets:
+
+```shell
+dotnet user-secrets init
+dotnet user-secrets set "AzureOpenAIKey" "YOUR_AZURE_OPEN_AI_KEY"
+dotnet user-secrets set "AzureOpenAIEndpoint" "YOUR_AZURE_OPEN_AI_ENDPOINT"
+```
+
+If you are using OpenAI, feel free to fork this project and simply change the service type and configuration values.
