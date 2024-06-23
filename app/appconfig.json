@@ -1,0 +1,5 @@
+{
+  "AzureOpenAIKey": "dotnet user-secrets set 'AzureOpenAIKey' 'YOUR_KEY_HERE'",
+  "AzureOpenAIEndpoint": "dotnet user-secrets set 'AzureOpenAIEndpoint' 'YOUR_KEY_HERE'",
+  "AzureOpenAIDeployment": "gpt-4omni"
+}

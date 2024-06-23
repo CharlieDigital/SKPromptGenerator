@@ -1,0 +1,48 @@
+using System.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
+
+namespace SKPromptGenerator;
+
+/// <summary>
+/// Generates the attribute that we used to decorate classes for the prompt template.
+/// </summary>
+[Generator]
+public sealed class PromptTemplateAttributeGenerator : IIncrementalGenerator
+{
+  public void Initialize(IncrementalGeneratorInitializationContext context) =>
+    context.RegisterPostInitializationOutput(context =>
+      context.AddSource(
+        $"{PromptTemplateAttributeSource.Name}.g.cs",
+        SourceText.From(PromptTemplateAttributeSource.SourceCode, Encoding.UTF8)
+      )
+    );
+}
+
+/// <summary>
+/// Source for the template attribute.
+/// </summary>
+internal static class PromptTemplateAttributeSource
+{
+  public const string Namespace = "SKPromptGenerator";
+  public const string Name = "PromptTemplateAttribute";
+  public const string FullyQualifiedName = $"{Namespace}.{Name}";
+
+  public const string SourceCode = """
+using System;
+using System.Reflection;
+
+namespace SKPromptGenerator;
+
+[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
+public sealed class PromptTemplateAttribute(
+  int maxTokens = 500,
+  double temperature = 0.5,
+  double topP = 0
+) : Attribute {
+  public int MaxTokens => maxTokens;
+  public double Temperature => temperature;
+  public double TopP => topP;
+}
+""";
+}
