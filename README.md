@@ -2,7 +2,32 @@
 
 This project is a proof-of-concept prompt class generator using C# source generators.
 
-It simplifies interacting with Semantic Kernel by automatically generating strongly typed classes for every prompt string that you decorate with an attribute.
+## Motivation
+
+When working with prompts, you'll end up doing a lot of string templating and repetitive code.
+
+Wouldn't it be nice if you could just have a strongly typed class for each prompt automatically created using the prompt?
+
+This library does exactly that.
+
+```csharp
+public static class Prompts
+{
+  // Define a prompt
+  [PromptTemplate]
+  public const string Capitol = """
+    What is the capitol of {state} {country}?
+    Respond directly in a single line
+    """;
+}
+
+// Execute the prompt passing in a Semantic Kernel instance.
+var capitol = await new CapitolPrompt("NJ", "USA").ExecuteAsync(kernel);
+```
+
+## Limitations
+
+Your prompt must be a `const string`.
 
 ## Installing
 
@@ -89,3 +114,30 @@ capitol = await new CapitolPrompt("NY", "USA").ExecuteAsync(kernel);
 Console.WriteLine($"{capitol}");
 // The capitol of New York is: Albany.
 ```
+
+## Prompt Execution Settings
+
+The `PromptTemplate` attribute also allows specification of the prompt execution settings.
+
+The three parameters are:
+
+|Parameter|Details|Default|
+|--|--|--|
+|`MaxTokens`|The maximum number of tokens in the response|`500`|
+|`Temperature`|The temperature|`0.5`|
+|`TopP`|The TopP|`0`|
+
+For example:
+
+```csharp
+public static class Prompts
+{
+  [PromptTemplate(10, 0.1)]
+  public const string SampleTmpl1 = """
+    What is the capitol of {state} {country}
+    Respond directly on a single line.
+    """;
+}
+```
+
+(See the `PromptTmpl` class for details)
