@@ -57,9 +57,11 @@ dotnet add package SKPromptGenerator
 dotnet add package Microsoft.SemanticKernel
 ```
 
-In the project, create a class like so:
+In the project, create a class like so (you can call your class whatever you want):
 
 ```csharp
+namespace SomeNamespace;
+
 public static class Prompts
 {
   [PromptTemplate]
@@ -72,6 +74,8 @@ public static class Prompts
     """;
 }
 ```
+
+> 💡 Note the usage of a namespace for the class.
 
 In the code above, we've created a prompt with two tokens: `{state}` and `{country}`.
 
@@ -104,6 +108,8 @@ For example: The capitol of California is: Sacramento.
   };
 }
 ```
+
+Note the two class parameters `state` and `country` which are extracted from the prompt template.
 
 Now we can use the prompt like so:
 
