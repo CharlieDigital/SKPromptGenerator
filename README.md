@@ -25,6 +25,8 @@ public static class Prompts
 var capitol = await new CapitolPrompt("NJ", "USA").ExecuteAsync(kernel);
 ```
 
+The tokens in the prompt string become named parameters on the class constructor 🎉
+
 ## Limitations
 
 Your prompt must be a `const string`.

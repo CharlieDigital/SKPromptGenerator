@@ -37,7 +37,7 @@ public class PromptGenerator : ISourceGenerator
     {
       var parameters = string.Join(
         ", ",
-        TokenPattern.Matches(prompt.Tmpl).Select(m => $"string {m.Groups.Values.Last()}")
+        TokenPattern.Matches(prompt.Tmpl).Select(m => $"string {m.Groups.Values.Last()}").Distinct()
       );
 
       var src = $$""""
