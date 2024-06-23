@@ -29,7 +29,9 @@ The tokens in the prompt string become named parameters on the class constructor
 
 ## Limitations
 
-Your prompt must be a `const string`.
+1. Your prompt must be a `const string` because the generator needs to be able to read the string in the source.
+2. Your prompts must live in some class in a namespace.  If you get the error `error CS1001: Identifier expected`, then you are probably missing a namespace around your prompt.
+3. You must add a dependency to `Microsoft.SemanticKernel` since the `ExecuteAsync` method requires the `Kernel` instance.
 
 ## Installing
 
