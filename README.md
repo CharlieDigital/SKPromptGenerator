@@ -75,7 +75,7 @@ public static class Prompts
 }
 ```
 
-> 💡 Note the usage of a namespace for the class.
+> 💡 Note the usage of a namespace for the class.  The prompt need not be in a standalone class.  It can also be placed in an existing `Controller` (for example)
 
 In the code above, we've created a prompt with two tokens: `{state}` and `{country}`.
 
@@ -86,7 +86,7 @@ using System;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using SKPromptGenerator;
 
-namespace App;
+namespace SomeNamespace;
 
 public partial class CapitolPrompt(
   string state, string country
