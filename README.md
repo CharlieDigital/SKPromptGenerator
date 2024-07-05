@@ -1,12 +1,14 @@
 # Semantic Kernel (SK) Prompt Generator
 
-This project is a proof-of-concept prompt class generator using C# source generators.
+SKPromptGenerator is a C# source generator which automatically creates strongly-typed classes for your string prompt templates.
+
+It is intended to be used with [Semantic Kernel](https://github.com/microsoft/semantic-kernel).
 
 ## Motivation
 
 When working with prompts, you'll end up doing a lot of string templating and repetitive code.
 
-Wouldn't it be nice if you could just have a strongly typed class for each prompt automatically created using the prompt?
+Wouldn't it be nice if you could just have a strongly-typed class for each prompt automatically created using the prompt?
 
 This library does exactly that.
 
@@ -22,7 +24,10 @@ public static class Prompts
 }
 
 // Execute the prompt passing in a Semantic Kernel instance.
-var capitol = await new CapitolPrompt("NJ", "USA").ExecuteAsync(kernel);
+var capitol = await new CapitolPrompt(
+  state: "NJ",
+  country: "USA"
+).ExecuteAsync(kernel);
 ```
 
 The tokens in the prompt string become named parameters on the class constructor 🎉
@@ -43,6 +48,8 @@ To install:
 ```shell
 dotnet add package SKPromptGenerator
 ```
+
+For the latest releases, see: https://www.nuget.org/packages/SKPromptGenerator
 
 ## Using
 
@@ -160,6 +167,8 @@ public const string CapitolCustom = """
 ```
 
 This allows you to take full control of the execution of the prompt (e.g. add logging, telemetry, etc.).
+
+> 💡 Note: you should use a global `using` statement for the namespace of your custom base class.
 
 ## Prompt Execution Settings
 
