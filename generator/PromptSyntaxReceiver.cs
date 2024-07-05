@@ -49,7 +49,9 @@ public class PromptSyntaxReceiver : ISyntaxContextReceiver
     {
       var declared = context.SemanticModel.GetDeclaredSymbol(statement);
 
-      var ns = declared?.ContainingNamespace.Name ?? "SkPromptGen";
+      var ns = string.IsNullOrWhiteSpace(declared?.ContainingNamespace.Name)
+        ? "SkPromptGen"
+        : declared.ContainingNamespace.Name;
 
       var fieldName = declared?.Name;
 
@@ -64,7 +66,17 @@ public class PromptSyntaxReceiver : ISyntaxContextReceiver
         continue;
       }
 
-      Prompts.Add(new(ns, fieldName, fieldValue, args ?? []));
+      var baseClass = "PromptTemplateBase";
+
+      // Check if it's a generic attribute
+      if (attribute?.Name is GenericNameSyntax generic)
+      {
+        baseClass =
+          (generic.TypeArgumentList.Arguments[0] as IdentifierNameSyntax)?.Identifier.Text
+          ?? "PromptTemplateBase";
+      }
+
+      Prompts.Add(new(ns, fieldName, fieldValue, baseClass, args ?? []));
     }
   }
 }

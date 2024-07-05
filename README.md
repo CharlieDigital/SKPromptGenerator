@@ -126,6 +126,41 @@ Console.WriteLine($"{capitol}");
 // The capitol of New York is: Albany.
 ```
 
+## Custom Base Class
+
+If you want to customize how the prompt is executed, you can specify a custom base class when assigning the attribute.
+
+Your base class must inherit from `PromptTemplateBase`:
+
+```csharp
+public abstract class CustomBase : PromptTemplateBase
+{
+  public override async Task<string> ExecuteAsync(
+    Kernel kernel,
+    string? serviceId = null,
+    CancellationToken cancellation = default
+  )
+  {
+    return await Task.FromResult("response");
+  }
+}
+```
+
+And then you can specify this custom base class as a generic type:
+
+```csharp
+[PromptTemplate<CustomBase>]
+public const string CapitolCustom = """
+  What is the capitol of {state} {country}?
+  Respond directly in a single line
+  When writing the state, always write it as the full name
+  Write your output in the format: The capitol of <STATE> is: <CAPITOL>.
+  For example: The capitol of California is: Sacramento.
+  """;
+```
+
+This allows you to take full control of the execution of the prompt (e.g. add logging, telemetry, etc.).
+
 ## Prompt Execution Settings
 
 The `PromptTemplate` attribute also allows specification of the prompt execution settings.

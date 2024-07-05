@@ -41,9 +41,11 @@ internal static class PromptTemplateBaseSource
 
       public abstract string Text { get; }
 
-      public async Task<string> ExecuteAsync(
+      public virtual async Task<string> ExecuteAsync(
         Kernel kernel,
-        string serviceId = null,
+        #nullable enable
+        string? serviceId = null,
+        #nullable disable
         CancellationToken cancellation = default
       )
       {

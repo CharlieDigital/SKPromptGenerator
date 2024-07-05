@@ -29,20 +29,29 @@ internal static class PromptTemplateAttributeSource
   public const string FullyQualifiedName = $"{Namespace}.{Name}";
 
   public const string SourceCode = """
-using System;
-using System.Reflection;
+    using System;
+    using System.Reflection;
 
-namespace SKPromptGenerator;
+    namespace SKPromptGenerator;
 
-[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
-public sealed class PromptTemplateAttribute(
-  int maxTokens = 500,
-  double temperature = 0.5,
-  double topP = 0
-) : Attribute {
-  public int MaxTokens => maxTokens;
-  public double Temperature => temperature;
-  public double TopP => topP;
-}
-""";
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
+    public class PromptTemplateAttribute<T>(
+      int maxTokens = 500,
+      double temperature = 0.5,
+      double topP = 0
+    ) : Attribute where T : PromptTemplateBase {
+      public int MaxTokens => maxTokens;
+      public double Temperature => temperature;
+      public double TopP => topP;
+    }
+
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
+    public class PromptTemplateAttribute(
+      int maxTokens = 500,
+      double temperature = 0.5,
+      double topP = 0
+    ) : PromptTemplateAttribute<PromptTemplateBase>(maxTokens, temperature, topP) {
+
+    }
+    """;
 }

@@ -3,7 +3,13 @@ namespace SKPromptGenerator;
 /// <summary>
 /// Stores the encountered template configurations.
 /// </summary>
-public record struct PromptTmpl(string Namespace, string Name, string Tmpl, string[] ConfigValues)
+public record struct PromptTmpl(
+  string Namespace,
+  string Name,
+  string Tmpl,
+  string BaseClass,
+  string[] ConfigValues
+)
 {
   public readonly string MaxTokens
   {

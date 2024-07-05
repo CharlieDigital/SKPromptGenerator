@@ -49,7 +49,7 @@ public class PromptGenerator : ISourceGenerator
 
         public partial class {{prompt.Name}}Prompt(
           {{parameters}}
-        ) : PromptTemplateBase
+        ) : {{prompt.BaseClass}}
         {
           public override string Text => $"""
         {{prompt.Tmpl.Trim()}}

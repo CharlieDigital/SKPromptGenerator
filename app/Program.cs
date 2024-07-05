@@ -22,3 +22,20 @@ Console.WriteLine($"{trenton}");
 var albany = await new CapitolPrompt("NY", "USA").ExecuteAsync(kernel);
 
 Console.WriteLine($"{albany}");
+
+// Here, we are using a custom prompt template base class.
+var response = await new CapitolCustomPrompt("DOESN'T", "MATTER").ExecuteAsync(kernel);
+
+Console.WriteLine($"{response}");
+
+public abstract class CustomBase : SKPromptGenerator.PromptTemplateBase
+{
+  public override async Task<string> ExecuteAsync(
+    Kernel kernel,
+    string? serviceId = null,
+    CancellationToken cancellation = default
+  )
+  {
+    return await Task.FromResult("A fake response");
+  }
+}
