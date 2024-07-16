@@ -7,9 +7,9 @@ namespace SKPromptGenerator;
 /// This is our SKPromptGenerator that actually outputs the source code.
 /// </summary>
 [Generator]
-public class PromptGenerator : ISourceGenerator
+public partial class PromptGenerator : ISourceGenerator
 {
-  private static readonly Regex TokenPattern = new Regex("\\{([^\\}]+)\\}", RegexOptions.Multiline);
+  private static readonly Regex TokenPattern = new(@"\{\{\$([^\}]+)\}\}", RegexOptions.Multiline);
 
   /// <summary>
   /// We hook up our receiver here so that we can access it later.
@@ -40,6 +40,8 @@ public class PromptGenerator : ISourceGenerator
         TokenPattern.Matches(prompt.Tmpl).Select(m => $"string {m.Groups.Values.Last()}").Distinct()
       );
 
+      var tmpl = TokenPattern.Replace(prompt.Tmpl.Trim(), "{{$1}}");
+
       var src = $$""""
         using System;
         using Microsoft.SemanticKernel.Connectors.OpenAI;
@@ -51,8 +53,8 @@ public class PromptGenerator : ISourceGenerator
           {{parameters}}
         ) : {{prompt.BaseClass}}
         {
-          public override string Text => $"""
-        {{prompt.Tmpl.Trim()}}
+          public override string Text => $$"""
+        {{tmpl}}
         """;
 
           public override OpenAIPromptExecutionSettings Settings => new OpenAIPromptExecutionSettings

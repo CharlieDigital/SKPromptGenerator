@@ -4,6 +4,8 @@ SKPromptGenerator is a C# source generator which automatically creates strongly-
 
 It is intended to be used with [Semantic Kernel](https://github.com/microsoft/semantic-kernel).
 
+> 💡 NOTE: As of version 4, the token format is switched from `{name}` to `{{$name}}` to match Semantic Kernel.
+
 ## Motivation
 
 When working with prompts, you'll end up doing a lot of string templating and repetitive code.
