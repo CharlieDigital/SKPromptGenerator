@@ -17,7 +17,7 @@ public class BasicTests
       {
         [PromptTemplate(1000, 0.7)]
         public const string Template1 = """
-          What is the capitol of {state} {country}
+          What is the capitol of {{$state}} {{$country}}
           Respond directly on a single line.
           """;
       }
@@ -49,7 +49,7 @@ public class BasicTests
       {
         [PromptTemplate<CustomBase>(1000, 0.7)]
         public const string Template1 = """
-          What is the capitol of {state} {country}
+          What is the capitol of {{$state}} {{$country}}
           Respond directly on a single line.
           """;
       }
@@ -98,7 +98,7 @@ public class BasicTests
   }
 
   [Fact]
-  public async void SampleTmpl2_With_Generic_Type_Test()
+  public async Task SampleTmpl2_With_Generic_Type_Test()
   {
     var prompt = new SampleTmpl2Prompt("NJ", "USA");
 
@@ -114,19 +114,41 @@ public class BasicTests
 
     Assert.Equal("response", response);
   }
+
+  [Fact]
+  public void SampleTmplJson_Test()
+  {
+    var prompt = new SampleTmplJsonPrompt("NJ", "USA");
+
+    Assert.Equal(
+      """
+      What is the capitol of NJ USA
+      Respond in JSON like this: { "capitol": "(answer here)" }
+      Respond directly on a single line.
+      """,
+      prompt.Text
+    );
+  }
 }
 
 public static class Prompts
 {
   [PromptTemplate(1000, 0.7)]
   public const string SampleTmpl1 = """
-    What is the capitol of {state} {country}
+    What is the capitol of {{$state}} {{$country}}
     Respond directly on a single line.
     """;
 
   [PromptTemplate<CustomBase>(1000, 0.7)]
   public const string SampleTmpl2 = """
-    What is the capitol of {state} {country}
+    What is the capitol of {{$state}} {{$country}}
+    Respond directly on a single line.
+    """;
+
+  [PromptTemplate(1000, 0.7)]
+  public const string SampleTmplJson = """
+    What is the capitol of {{$state}} {{$country}}
+    Respond in JSON like this: { "capitol": "(answer here)" }
     Respond directly on a single line.
     """;
 }
