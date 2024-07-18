@@ -29,6 +29,8 @@ internal static class PromptTemplateBaseSource
   public const string FullyQualifiedName = $"{Namespace}.{Name}";
 
   public const string SourceCode = """
+    using System.Text.Json;
+    using System.Text.Json.Serialization;
     using Microsoft.SemanticKernel;
     using Microsoft.SemanticKernel.ChatCompletion;
     using Microsoft.SemanticKernel.Connectors.OpenAI;
@@ -37,6 +39,10 @@ internal static class PromptTemplateBaseSource
 
     public abstract class PromptTemplateBase
     {
+      private static readonly JsonSerializerOptions SerializerOptions = new() {
+        PropertyNameCaseInsensitive = true
+      };
+
       public abstract OpenAIPromptExecutionSettings Settings { get; }
 
       public abstract string Text { get; }
@@ -59,6 +65,18 @@ internal static class PromptTemplateBaseSource
 
         return result.ToString();
       }
+
+      #nullable enable
+      public virtual async Task<T?> ExecuteAsync<T>(
+        Kernel kernel,
+        string? serviceId = null,
+        CancellationToken cancellation = default
+      ) {
+        var json = await ExecuteAsync(kernel, serviceId, cancellation);
+
+        return JsonSerializer.Deserialize<T>(json, SerializerOptions);
+      }
+      #nullable disable
     }
     """;
 }
