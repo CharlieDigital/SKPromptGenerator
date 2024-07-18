@@ -28,6 +28,10 @@ var response = await new CapitolCustomPrompt("DOESN'T", "MATTER").ExecuteAsync(k
 
 Console.WriteLine($"{response}");
 
+var sacramento = await new CapitolJsonPrompt("CA", "US").ExecuteAsync<CapitolResponse>(kernel);
+
+Console.WriteLine($"The capitol of {sacramento?.State} is {sacramento?.Capitol}");
+
 public abstract class CustomBase : SKPromptGenerator.PromptTemplateBase
 {
   public override async Task<string> ExecuteAsync(
@@ -39,3 +43,5 @@ public abstract class CustomBase : SKPromptGenerator.PromptTemplateBase
     return await Task.FromResult("A fake response");
   }
 }
+
+public record CapitolResponse(string Country, string State, string Capitol);
