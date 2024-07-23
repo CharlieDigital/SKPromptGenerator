@@ -72,11 +72,23 @@ internal static class PromptTemplateBaseSource
         string? serviceId = null,
         CancellationToken cancellation = default
       ) {
+        var (result, _) = await ExecuteWithJsonAsync<T>(kernel, serviceId, cancellation);
+
+        return result;
+      }
+      #nullable disable
+
+      #nullable enable
+      public virtual async Task<(T? Result, string Json)> ExecuteWithJsonAsync<T>(
+        Kernel kernel,
+        string? serviceId = null,
+        CancellationToken cancellation = default
+      ) {
         var json = await ExecuteAsync(kernel, serviceId, cancellation);
 
-        json = json.Trim().Replace("```json", "").Replace("```")
+        json = json.Trim().Replace("```json", "").Replace("```", "");
 
-        return JsonSerializer.Deserialize<T>(json, SerializerOptions);
+        return (JsonSerializer.Deserialize<T>(json, SerializerOptions), json);
       }
       #nullable disable
     }
