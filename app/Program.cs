@@ -28,7 +28,10 @@ var response = await new CapitolCustomPrompt("DOESN'T", "MATTER").ExecuteAsync(k
 
 Console.WriteLine($"{response}");
 
-var sacramento = await new CapitolJsonPrompt("CA", "US").ExecuteAsync<CapitolResponse>(kernel);
+var (sacramento, json) = await new CapitolJsonPrompt(
+  "CA",
+  "US"
+).ExecuteWithJsonAsync<CapitolResponse>(kernel);
 
 Console.WriteLine($"The capitol of {sacramento?.State} is {sacramento?.Capitol}");
 

@@ -74,6 +74,8 @@ internal static class PromptTemplateBaseSource
       ) {
         var json = await ExecuteAsync(kernel, serviceId, cancellation);
 
+        json = json.Trim().Replace("```json", "").Replace("```")
+
         return JsonSerializer.Deserialize<T>(json, SerializerOptions);
       }
       #nullable disable
