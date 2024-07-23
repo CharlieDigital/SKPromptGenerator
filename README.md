@@ -20,7 +20,7 @@ public static class Prompts
   // Define a prompt
   [PromptTemplate]
   public const string Capitol = """
-    What is the capitol of {state} {country}?
+    What is the capitol of {{$state}} {{$country}}?
     Respond directly in a single line
     """;
 }
@@ -76,7 +76,7 @@ public static class Prompts
 {
   [PromptTemplate]
   public const string Capitol = """
-    What is the capitol of {state} {country}?
+    What is the capitol of {{$state}} {{$country}}?
     Respond directly in a single line
     When writing the state, always write it as the full name
     Write your output in the format: The capitol of <STATE> is: <CAPITOL>.
@@ -87,7 +87,7 @@ public static class Prompts
 
 > 💡 Note the usage of a namespace for the class.  The prompt need not be in a standalone class.  It can also be placed in an existing `Controller` (for example)
 
-In the code above, we've created a prompt with two tokens: `{state}` and `{country}`.
+In the code above, we've created a prompt with two tokens: `{{$state}}` and `{{$country}}`.
 
 The `[PromptTemplate]` attribute instructs the generator to create a class like so:
 
@@ -119,7 +119,7 @@ For example: The capitol of California is: Sacramento.
 }
 ```
 
-Note the two class parameters `state` and `country` which are extracted from the prompt template.
+Note the two class parameters `state` and `country` which are extracted from the prompt template are now string literal tokens.
 
 Now we can use the prompt like so:
 
@@ -134,6 +134,21 @@ capitol = await new CapitolPrompt("NY", "USA").ExecuteAsync(kernel);
 Console.WriteLine($"{capitol}");
 // The capitol of New York is: Albany.
 ```
+
+If your prompt returns JSON, we can also deserialize it into an object:
+
+```csharp
+// Our model that we are serializing to
+public record CapitolResponse(string Country, string State, string Capitol);
+
+// Use ExecuteWithJsonAsync if we also want the raw JSON
+var (sacramento, json) = await new CapitolJsonPrompt(
+  "CA",
+  "US"
+).ExecuteWithJsonAsync<CapitolResponse>(kernel);
+```
+
+NOTE: The underlying code will strip Markdown fences so if you are expecting your result to contain markdown, it will be stripped.
 
 ## Custom Base Class
 
@@ -160,7 +175,7 @@ And then you can specify this custom base class as a generic type:
 ```csharp
 [PromptTemplate<CustomBase>]
 public const string CapitolCustom = """
-  What is the capitol of {state} {country}?
+  What is the capitol of {{$state}} {{$country}}?
   Respond directly in a single line
   When writing the state, always write it as the full name
   Write your output in the format: The capitol of <STATE> is: <CAPITOL>.
@@ -191,7 +206,7 @@ public static class Prompts
 {
   [PromptTemplate(10, 0.1)]
   public const string SampleTmpl1 = """
-    What is the capitol of {state} {country}
+    What is the capitol of {{$state}} {{$country}}
     Respond directly on a single line.
     """;
 }
