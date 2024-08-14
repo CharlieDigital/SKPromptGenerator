@@ -43,7 +43,7 @@ public class BasicTests
   public void Debugger_Test_With_Generic()
   {
     var source = """"
-      namespace test;
+      namespace Unit.Test.Namespace;
 
       public static class Prompts
       {
@@ -128,6 +128,14 @@ public class BasicTests
       """,
       prompt.Text
     );
+  }
+
+  [Fact]
+  public void Namespace_Test()
+  {
+    var prompt = new This.Is.A.Namespace.TestNamespacePrompt("NJ", "USA");
+
+    Assert.Equal("This.Is.A.Namespace", prompt.GetType().Namespace);
   }
 }
 

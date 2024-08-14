@@ -50,8 +50,8 @@ public class PromptSyntaxReceiver : ISyntaxContextReceiver
       var declared = context.SemanticModel.GetDeclaredSymbol(statement);
 
       var ns = string.IsNullOrWhiteSpace(declared?.ContainingNamespace.Name)
-        ? "SkPromptGen"
-        : declared.ContainingNamespace.Name;
+        ? "SkPromptGenerator"
+        : declared.ContainingNamespace.ToString();
 
       var fieldName = declared?.Name;
 
