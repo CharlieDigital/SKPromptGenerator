@@ -1,5 +1,5 @@
-﻿using App;
-using Microsoft.SemanticKernel;
+﻿using Microsoft.SemanticKernel;
+using SKPromptGenerator.App;
 
 Console.WriteLine("Running test app...");
 Console.WriteLine($"Using key: {AppConfig.AzureOpenAIKey[..8]}****");
