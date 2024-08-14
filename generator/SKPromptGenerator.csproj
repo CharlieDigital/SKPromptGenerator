@@ -15,18 +15,18 @@
     <RootNamespace>SKPromptGenerator</RootNamespace>
     <Authors>@chrlschn</Authors>
     <Company />
-    <Description>A source generator to automatically create classes from string prompts.</Description>
+    <Description>A source generator to automatically create strongly typed classes from string prompts for Semantic Kernel.</Description>
     <PackageProjectUrl>https://github.com/CharlieDigital/SKPromptGenerator</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/CharlieDigital/SKPromptGenerator</RepositoryUrl>
-    <PackageTags>source; generator; semantic kernel; class; ai; llm; openai</PackageTags>
+    <PackageTags>source generator; semantic kernel; ai; llm; openai, prompt</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReleaseNotes>https://github.com/CharlieDigital/SKPromptGenerator/releases</PackageReleaseNotes>
     <RepositoryType>git</RepositoryType>
     <SignAssembly>False</SignAssembly>
-    <AssemblyVersion>0.4.2</AssemblyVersion>
-    <FileVersion>0.4.2</FileVersion>
-    <Version>0.4.2</Version>
+    <AssemblyVersion>0.4.3</AssemblyVersion>
+    <FileVersion>0.4.3</FileVersion>
+    <Version>0.4.3</Version>
     <NeutralLanguage>en</NeutralLanguage>
     <DevelopmentDependency>true</DevelopmentDependency>
     <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
