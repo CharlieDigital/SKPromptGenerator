@@ -49,6 +49,11 @@ public class PromptSyntaxReceiver : ISyntaxContextReceiver
     {
       var declared = context.SemanticModel.GetDeclaredSymbol(statement);
 
+      if (declared == null)
+      {
+        continue;
+      }
+
       var ns = string.IsNullOrWhiteSpace(declared?.ContainingNamespace.Name)
         ? "SkPromptGenerator"
         : declared.ContainingNamespace.ToString();
@@ -76,7 +81,7 @@ public class PromptSyntaxReceiver : ISyntaxContextReceiver
           ?? "PromptTemplateBase";
       }
 
-      Prompts.Add(new(ns, fieldName, fieldValue, baseClass, args ?? []));
+      Prompts.Add(new(ns ?? "", fieldName, fieldValue, baseClass, args ?? []));
     }
   }
 }
