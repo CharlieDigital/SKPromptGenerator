@@ -81,7 +81,7 @@ public class PromptSyntaxReceiver : ISyntaxContextReceiver
           ?? "PromptTemplateBase";
       }
 
-      Prompts.Add(new(ns ?? "", fieldName, fieldValue, baseClass, args ?? []));
+      Prompts.Add(new(ns ?? "SkPromptGenerator", fieldName, fieldValue, baseClass, args ?? []));
     }
   }
 }
