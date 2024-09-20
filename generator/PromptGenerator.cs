@@ -49,14 +49,26 @@ public partial class PromptGenerator : ISourceGenerator
 
         namespace {{prompt.Namespace}};
 
+        /// <summary>
+        /// Generated prompt for `{{prompt.Name}}`
+        /// </summary>
         public partial class {{prompt.Name}}Prompt(
           {{parameters}}
         ) : {{prompt.BaseClass}}
         {
+          /// <summary>
+          /// The base prompt template string for `{{prompt.Name}}`
+          /// </summary>
           public override string Text => $$"""
         {{tmpl}}
         """;
 
+          /// <summary>
+          /// Settings for the prompt `{{prompt.Name}}`:
+          ///   MaxTokens = {{prompt.MaxTokens}}
+          ///   Temperature = {{prompt.Temperature}}d
+          ///   TopP = {{prompt.TopP}}d
+          /// </summary>
           public override OpenAIPromptExecutionSettings Settings => new OpenAIPromptExecutionSettings
           {
             MaxTokens = {{prompt.MaxTokens}},

@@ -37,16 +37,34 @@ internal static class PromptTemplateBaseSource
 
     namespace SKPromptGenerator;
 
+    /// <summary>
+    /// Abstract base class for executing the prompt.  Override this class to
+    /// provide custom execution of the prompt.
+    /// </summary>
     public abstract class PromptTemplateBase
     {
-      private static readonly JsonSerializerOptions SerializerOptions = new() {
+      protected static readonly JsonSerializerOptions SerializerOptions = new() {
         PropertyNameCaseInsensitive = true
       };
 
+      /// <summary>
+      /// The execution settings for this prompt.
+      /// </summary>
       public abstract OpenAIPromptExecutionSettings Settings { get; }
 
+      /// <summary>
+      /// The text of this prompt.
+      /// </summary>
       public abstract string Text { get; }
 
+      /// <summary>
+      /// Executes the prompt using the default execution.  Override this method
+      /// to provide custom execution logic (e.g. logging, telemetry, etc.)
+      /// </summary>
+      /// <param name="kernel">The Semantic Kernel instance.</param>
+      /// <param name="serviceId">An optional service ID to specify for execution.</param>
+      /// <param name="cancellation">An optional cancellation token.</param>
+      /// <returns>A string with the results of execution.</returns>
       public virtual async Task<string> ExecuteAsync(
         Kernel kernel,
         #nullable enable
@@ -66,6 +84,15 @@ internal static class PromptTemplateBaseSource
         return result.ToString();
       }
 
+      /// <summary>
+      /// Executes the prompt and expects a JSON response that will be deserialized
+      /// to the type `T`.
+      /// </summary>
+      /// <param name="kernel">The Semantic Kernel instance.</param>
+      /// <param name="serviceId">An optional service ID to specify for execution.</param>
+      /// <param name="cancellation">An optional cancellation token.</param>
+      /// <typeparam name="T">The type `T` of the response object.</typeparam>
+      /// <returns>An instance of type `T` deserialized from the JSON response.</returns>
       #nullable enable
       public virtual async Task<T?> ExecuteAsync<T>(
         Kernel kernel,
@@ -78,6 +105,17 @@ internal static class PromptTemplateBaseSource
       }
       #nullable disable
 
+      /// <summary>
+      /// Executes the prompt and expects a JSON response that will be deserialized
+      /// to the type `T`.  This call includes the JSON result as part of the tuple.
+      /// This method call will perform trimming of JSON fences if present using
+      /// regular string find/replace.
+      /// </summary>
+      /// <param name="kernel">The Semantic Kernel instance.</param>
+      /// <param name="serviceId">An optional service ID to specify for execution.</param>
+      /// <param name="cancellation">An optional cancellation token.</param>
+      /// <typeparam name="T">The type `T` of the response object.</typeparam>
+      /// <returns>An instance of type `T` deserialized from the JSON response in a tuple with the full JSON response as well..</returns>
       #nullable enable
       public virtual async Task<(T? Result, string Json)> ExecuteWithJsonAsync<T>(
         Kernel kernel,

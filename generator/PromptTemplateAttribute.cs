@@ -34,6 +34,14 @@ internal static class PromptTemplateAttributeSource
 
     namespace SKPromptGenerator;
 
+    /// <summary>
+    /// Attribute applied to `const string` class fields to generate a prompt class.
+    /// Use this when specifying a custom base class for executing the prompt.
+    /// </summary>
+    /// <param name="maxTokens">The maximum number of tokens; default is 500</param>
+    /// <param name="temperature">The temperature; default is 0.5</param>
+    /// <param name="topP">The Top P parameter; default is 0</param>
+    /// <typeparam name="T">The base type for the template inheriting from `PromptTemplateBase`</typeparam>
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
     public class PromptTemplateAttribute<T>(
       int maxTokens = 500,
@@ -45,6 +53,13 @@ internal static class PromptTemplateAttributeSource
       public double TopP => topP;
     }
 
+    /// <summary>
+    /// Attribute applied to `const string` class fields to generate a prompt class.
+    /// </summary>
+    /// <param name="maxTokens">The maximum number of tokens; default is 500</param>
+    /// <param name="temperature">The temperature; default is 0.5</param>
+    /// <param name="topP">The Top P parameter; default is 0</param>
+    /// <typeparam name="T">The base type for the template inheriting from `PromptTemplateBase`</typeparam>
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
     public class PromptTemplateAttribute(
       int maxTokens = 500,
