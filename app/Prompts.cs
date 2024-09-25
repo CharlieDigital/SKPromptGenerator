@@ -37,4 +37,12 @@ public static class Prompts
     Write each city on a separate line
     Start you response with: Sure, here are {{$count:int}} cities in {{$region}}, {{$country}}
     """;
+
+  [PromptTemplate]
+  public const string CitiesWithCapitalization = """
+    Write a list of {{$count:int}} cities in {{$region}}, {{$country}}
+    Write each city on a separate line
+    Write each city with the following capitalization: {{$capitalization:CapitalizationOptions}}
+    Start you response with: Sure, here are {{$count:int}} cities in {{$region}}, {{$country}}
+    """;
 }

@@ -104,8 +104,8 @@ public partial class CapitolPrompt(
   string state, string country
 ) : PromptTemplateBase
 {
-  public override string Text => $"""
-What is the capitol of {state} {country}?
+  public override string Text => $$"""
+What is the capitol of {{state}} {{country}}?
 Respond directly in a single line
 When writing the state, always write it as the full name
 Write your output in the format: The capitol of <STATE> is: <CAPITOL>.
@@ -151,6 +151,48 @@ var (sacramento, json) = await new CapitolJsonPrompt(
 ```
 
 NOTE: The underlying code will strip Markdown fences so if you are expecting your result to contain markdown, it will be stripped.
+
+### Typed Parameters
+
+If you want to use typed parameters, you can append the type to the parameter token:
+
+```csharp
+[PromptTemplate]
+public const string Cities = """
+  Write a list of {{$count:int}} cities in {{$region}}, {{$country}}
+  Write each city on a separate line
+  Start you response with: Sure, here are {{$count:int}} cities in {{$region}}, {{$country}}
+  """;
+```
+
+This will generate the signature:
+
+```csharp
+public partial class CitiesPrompt(
+  int count, string region, string country
+) : PromptTemplateBase
+```
+
+Which can then be invoked with a typed, integer parameter for count:
+
+```csharp
+var njCities = await new CitiesPrompt(4, "NJ", "USA").ExecuteAsync(kernel);
+```
+
+This will output:
+
+```
+Sure, here are 4 cities in NJ, USA:
+
+1. Newark
+2. Jersey City
+3. Paterson
+4. Elizabeth
+```
+
+Note that if you are using your own types, those types should be added using a global `using` statement or specify the full type name since the generated class does not know about your namespaces.
+
+(See the example in the `/app` directory for usage)
 
 ## Custom Base Class
 

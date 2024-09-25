@@ -131,6 +131,20 @@ public class BasicTests
   }
 
   [Fact]
+  public void Typed_Parameters_Test()
+  {
+    var prompt = new CitiesTmplPrompt(4, "NJ", "USA");
+
+    Assert.Equal(
+      """
+      Write the names of 4 cities in NJ, USA
+      Write one on each line.
+      """,
+      prompt.Text
+    );
+  }
+
+  [Fact]
   public void Namespace_Test()
   {
     var prompt = new This.Is.A.Namespace.TestNamespacePrompt("NJ", "USA");
@@ -158,6 +172,12 @@ public static class Prompts
     What is the capitol of {{$state}} {{$country}}
     Respond in JSON like this: { "capitol": "(answer here)" }
     Respond directly on a single line.
+    """;
+
+  [PromptTemplate]
+  public const string CitiesTmpl = """
+    Write the names of {{$count:int}} cities in {{$state}}, {{$country}}
+    Write one on each line.
     """;
 }
 

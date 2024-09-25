@@ -39,6 +39,15 @@ var njCities = await new CitiesPrompt(4, "NJ", "USA").ExecuteAsync(kernel);
 
 Console.WriteLine(njCities);
 
+var njCitiesCaps = await new CitiesWithCapitalizationPrompt(
+  4,
+  "NJ",
+  "USA",
+  CapitalizationOptions.AllCaps
+).ExecuteAsync(kernel);
+
+Console.WriteLine(njCitiesCaps);
+
 public abstract class CustomBase : SKPromptGenerator.PromptTemplateBase
 {
   public override async Task<string> ExecuteAsync(
