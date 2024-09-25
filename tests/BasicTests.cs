@@ -1,6 +1,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.ChatCompletion;
 using SKPromptGenerator;
 
 namespace tests;
@@ -145,6 +146,21 @@ public class BasicTests
   }
 
   [Fact]
+  public async void History_Builder_Test()
+  {
+    var response = await new HistoryTmplPrompt("Spencer").ExecuteAsync(
+      new Kernel(),
+      historyBuilder: (h) =>
+      {
+        h.Add(new ChatMessageContent(AuthorRole.User, "User question"));
+        h.Add(new ChatMessageContent(AuthorRole.System, "System response"));
+      }
+    );
+
+    Assert.Equal("User question\nSystem response", response);
+  }
+
+  [Fact]
   public void Namespace_Test()
   {
     var prompt = new This.Is.A.Namespace.TestNamespacePrompt("NJ", "USA");
@@ -179,6 +195,11 @@ public static class Prompts
     Write the names of {{$count:int}} cities in {{$state}}, {{$country}}
     Write one on each line.
     """;
+
+  [PromptTemplate<HistoryTestBase>]
+  public const string HistoryTmpl = """
+    Hello: {{$name}}
+    """;
 }
 
 public abstract class CustomBase : PromptTemplateBase
@@ -186,9 +207,34 @@ public abstract class CustomBase : PromptTemplateBase
   public override async Task<string> ExecuteAsync(
     Kernel kernel,
     string? serviceId = null,
+    Action<ChatHistory>? historyBuilder = null,
     CancellationToken cancellation = default
   )
   {
     return await Task.FromResult("response");
+  }
+}
+
+public abstract class HistoryTestBase : PromptTemplateBase
+{
+  public override async Task<string> ExecuteAsync(
+    Kernel kernel,
+    string? serviceId = null,
+    Action<ChatHistory>? historyBuilder = null,
+    CancellationToken cancellation = default
+  )
+  {
+    if (historyBuilder != null)
+    {
+      var history = new ChatHistory();
+
+      historyBuilder(history);
+
+      return string.Join(Environment.NewLine, history.Select(h => h.Content));
+    }
+    else
+    {
+      return await Task.FromResult("response");
+    }
   }
 }

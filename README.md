@@ -194,6 +194,33 @@ Note that if you are using your own types, those types should be added using a g
 
 (See the example in the `/app` directory for usage)
 
+### Including History
+
+The `ExecuteAsync` method takes a `historyBuilder` parameter which will receives a `ChatHistory` instance
+
+The unit tests show how this can be used:
+
+```csharp
+[Fact]
+public async void History_Builder_Test()
+{
+  var response = await new HistoryTmplPrompt("Spencer").ExecuteAsync(
+    new Kernel(),
+    // 👇 Here we can build the chat history up before adding the new user prompt
+    historyBuilder: (h) =>
+    {
+      h.Add(new ChatMessageContent(AuthorRole.User, "User question"));
+      h.Add(new ChatMessageContent(AuthorRole.System, "System response"));
+    }
+  );
+
+  // Fake test where we are just going to return the history instead
+  Assert.Equal("User question\nSystem response", response);
+}
+```
+
+You can do the retrieval of the actual history *before* the block and then do the history building in the block.
+
 ## Custom Base Class
 
 If you want to customize how the prompt is executed, you can specify a custom base class when assigning the attribute.

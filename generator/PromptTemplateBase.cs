@@ -63,12 +63,14 @@ internal static class PromptTemplateBaseSource
       /// </summary>
       /// <param name="kernel">The Semantic Kernel instance.</param>
       /// <param name="serviceId">An optional service ID to specify for execution.</param>
+      /// <param name="historyBuilder">An optional builder for the chat history.</param>
       /// <param name="cancellation">An optional cancellation token.</param>
       /// <returns>A string with the results of execution.</returns>
       public virtual async Task<string> ExecuteAsync(
         Kernel kernel,
         #nullable enable
         string? serviceId = null,
+        Action<ChatHistory>? historyBuilder = null,
         #nullable disable
         CancellationToken cancellation = default
       )
@@ -76,6 +78,11 @@ internal static class PromptTemplateBaseSource
         var chat = kernel.GetRequiredService<IChatCompletionService>(serviceId);
 
         var history = new ChatHistory();
+
+        if (historyBuilder != null)
+        {
+          historyBuilder(history);
+        }
 
         history.AddUserMessage(Text);
 
@@ -90,16 +97,20 @@ internal static class PromptTemplateBaseSource
       /// </summary>
       /// <param name="kernel">The Semantic Kernel instance.</param>
       /// <param name="serviceId">An optional service ID to specify for execution.</param>
+      /// <param name="historyBuilder">An optional builder for the chat history.</param>
       /// <param name="cancellation">An optional cancellation token.</param>
       /// <typeparam name="T">The type `T` of the response object.</typeparam>
       /// <returns>An instance of type `T` deserialized from the JSON response.</returns>
       #nullable enable
       public virtual async Task<T?> ExecuteAsync<T>(
         Kernel kernel,
+        #nullable enable
         string? serviceId = null,
+        Action<ChatHistory>? historyBuilder = null,
+        #nullable disable
         CancellationToken cancellation = default
       ) {
-        var (result, _) = await ExecuteWithJsonAsync<T>(kernel, serviceId, cancellation);
+        var (result, _) = await ExecuteWithJsonAsync<T>(kernel, serviceId, historyBuilder, cancellation);
 
         return result;
       }
@@ -113,16 +124,20 @@ internal static class PromptTemplateBaseSource
       /// </summary>
       /// <param name="kernel">The Semantic Kernel instance.</param>
       /// <param name="serviceId">An optional service ID to specify for execution.</param>
+      /// <param name="historyBuilder">An optional builder for the chat history.</param>
       /// <param name="cancellation">An optional cancellation token.</param>
       /// <typeparam name="T">The type `T` of the response object.</typeparam>
       /// <returns>An instance of type `T` deserialized from the JSON response in a tuple with the full JSON response as well..</returns>
       #nullable enable
       public virtual async Task<(T? Result, string Json)> ExecuteWithJsonAsync<T>(
         Kernel kernel,
+        #nullable enable
         string? serviceId = null,
+        Action<ChatHistory>? historyBuilder = null,
+        #nullable disable
         CancellationToken cancellation = default
       ) {
-        var json = await ExecuteAsync(kernel, serviceId, cancellation);
+        var json = await ExecuteAsync(kernel, serviceId, historyBuilder, cancellation);
 
         json = json.Trim().Replace("```json", "").Replace("```", "");
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.ChatCompletion;
 using SKPromptGenerator.App;
 
 Console.WriteLine("Running test app...");
@@ -53,6 +54,7 @@ public abstract class CustomBase : SKPromptGenerator.PromptTemplateBase
   public override async Task<string> ExecuteAsync(
     Kernel kernel,
     string? serviceId = null,
+    Action<ChatHistory>? historyBuilder = null,
     CancellationToken cancellation = default
   )
   {
