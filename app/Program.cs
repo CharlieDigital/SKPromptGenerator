@@ -17,11 +17,11 @@ var kernel = Kernel
 
 var trenton = await new CapitolPrompt("NJ", "USA").ExecuteAsync(kernel);
 
-Console.WriteLine($"{trenton}");
+Console.WriteLine(trenton);
 
 var albany = await new CapitolPrompt("NY", "USA").ExecuteAsync(kernel);
 
-Console.WriteLine($"{albany}");
+Console.WriteLine(albany);
 
 // Here, we are using a custom prompt template base class.
 var response = await new CapitolCustomPrompt("DOESN'T", "MATTER").ExecuteAsync(kernel);
@@ -34,6 +34,10 @@ var (sacramento, json) = await new CapitolJsonPrompt(
 ).ExecuteWithJsonAsync<CapitolResponse>(kernel);
 
 Console.WriteLine($"The capitol of {sacramento?.State} is {sacramento?.Capitol}");
+
+var njCities = await new CitiesPrompt(4, "NJ", "USA").ExecuteAsync(kernel);
+
+Console.WriteLine(njCities);
 
 public abstract class CustomBase : SKPromptGenerator.PromptTemplateBase
 {
