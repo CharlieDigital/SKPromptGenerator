@@ -10,6 +10,14 @@ public class PromptSyntaxReceiver : ISyntaxContextReceiver
 {
   public List<PromptTmpl> Prompts = [];
 
+  private static readonly string[] validAttributeNameArray =
+  [
+    "PromptTemplateAttribute",
+    "PromptTemplate",
+    "SKPromptGenerator.PromptTemplateAttribute",
+    "SKPromptGenerator.PromptTemplate"
+  ];
+
   public void OnVisitSyntaxNode(GeneratorSyntaxContext context)
   {
     if (context.Node is not FieldDeclarationSyntax fieldDec)
@@ -37,9 +45,15 @@ public class PromptSyntaxReceiver : ISyntaxContextReceiver
 
     var attribute = attributeList?.Attributes.First();
 
-    var attributeName = attribute?.Name.GetFirstToken();
+    var attributeName = attribute?.Name.ToString();
 
-    if (attributeName == null || attributeName.Value.Text != "PromptTemplate")
+    if (
+      attributeName == null
+      || (
+        !validAttributeNameArray.Contains(attributeName)
+        && validAttributeNameArray.FirstOrDefault(name => attributeName.StartsWith(name)) == null
+      )
+    )
     {
       return; // ! EXIT: Not a PromptTemplate
     }

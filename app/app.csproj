@@ -17,7 +17,7 @@
     <Nullable>enable</Nullable>
     <UserSecretsId>e69d0030-5f78-4320-b150-49d352dce99b</UserSecretsId>
 
-    <!-- This will dump file sinto /obj -->
+    <!-- This will dump files into /obj -->
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
   </PropertyGroup>
 
